@@ -52,8 +52,8 @@ namespace Teste1.Graphics
 
             // Temp
             UIColumn? column = (UIColumn)uiManager.Add(new UIColumn());
-            column.SetPosition(new(10, 10));
-            column.SetScale(new(80, 80));
+            column.SetPosition(new(10, 50));
+            column.SetScale(new(30, 40));
             column.SetGap(2);
 
             column.AddChildren(new UIPanel());

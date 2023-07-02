@@ -1,5 +1,4 @@
 ﻿using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 using Teste1.Graphics;
 
 namespace Teste1

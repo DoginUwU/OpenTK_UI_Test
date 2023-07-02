@@ -47,11 +47,8 @@ namespace Teste1.Graphics.UI
                 float childWidth = width;
                 float childHeight = currentHeightPerChild;
 
-                if(currentIndex > 0)
-                {
-                    childPosY += gap;
-                    childHeight -= gap;
-                }
+                childPosY += gap;
+                childHeight -= gap;
 
                 child.SetPosition(new(childPosX, childPosY));
                 child.SetScale(new(childWidth, childHeight));
