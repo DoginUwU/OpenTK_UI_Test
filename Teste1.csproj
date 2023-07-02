@@ -17,4 +17,16 @@
     <Folder Include="Assets\Shaders\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Assets\Fonts\inter.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Shaders\ui_shader.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Shaders\ui_shader.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

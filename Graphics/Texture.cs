@@ -21,7 +21,10 @@ namespace Teste1.Graphics
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest); // If scale image,get nearest pixel, and not get bluring image
 
             StbImage.stbi_set_flip_vertically_on_load(1);
-            ImageResult dirtTexture = ImageResult.FromStream(File.OpenRead("../../../Textures/" + file), ColorComponents.RedGreenBlueAlpha);
+
+            string texturesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Textures");
+
+            ImageResult dirtTexture = ImageResult.FromStream(File.OpenRead(Path.Combine(texturesDirectory, file)), ColorComponents.RedGreenBlueAlpha);
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, dirtTexture.Width, dirtTexture.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, dirtTexture.Data);
 

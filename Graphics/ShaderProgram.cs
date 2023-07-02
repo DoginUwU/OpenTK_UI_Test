@@ -46,11 +46,13 @@ namespace Teste1.Graphics
 
         public static string LoadShaderSource(string filePath)
         {
+            string shaderDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Shaders");
+
             string shaderSource = "";
 
             try
             {
-                using StreamReader reader = new("../../../Assets/Shaders/" + filePath);
+                using StreamReader reader = new(Path.Combine(shaderDirectory, filePath));
                 shaderSource = reader.ReadToEnd();
             }
             catch (Exception e)
