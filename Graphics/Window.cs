@@ -47,6 +47,13 @@ namespace Teste1.Graphics
             column.AddChildren(new UIPanel());
         }
 
+        ~Window()
+        {
+            window.Resize += OnResize;
+
+            Dispose();
+        }
+
         public void Run()
         {
             isRunning = true;
