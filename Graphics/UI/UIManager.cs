@@ -42,6 +42,14 @@ namespace Teste1.Graphics.UI
             {
                 ui.SetBackgroundColor(Color.Black);
             };
+            ui.MouseDown += () =>
+            {
+                ui.SetBackgroundColor(Color.BlueViolet);
+            };
+            ui.MouseUp += () =>
+            {
+                ui.SetBackgroundColor(Color.White);
+            };
 
             return ui;
         }

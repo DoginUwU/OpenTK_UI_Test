@@ -12,7 +12,8 @@ namespace Teste1.Graphics.UI
         public List<Vector2> vertices = default!;
         public List<int> indices = default!;
 
-        public event Action? Clicked;
+        public event Action? MouseDown;
+        public event Action? MouseUp;
         public event Action? MouseEnter;
         public event Action? MouseLeave;
         
@@ -85,6 +86,11 @@ namespace Teste1.Graphics.UI
 
         public virtual void Update()
         {
+            UpdateEvents();
+        }
+
+        private void UpdateEvents()
+        {
             if (manager == null) return;
 
             MouseState mouse = manager.window.OpenGLWindow().MouseState;
@@ -98,23 +104,25 @@ namespace Teste1.Graphics.UI
                     isMouseEnter = true;
                 }
 
-                if (mouse.IsButtonDown(MouseButton.Left))
+                if (mouse.IsButtonDown(MouseButton.Left) && !isButtonDown)
                 {
+                    MouseDown?.Invoke();
                     isButtonDown = true;
-                } else if(isButtonDown)
-                {
-                    isButtonDown = false;
-                    Clicked?.Invoke();
                 }
-            } else if(isButtonDown)
-            {
-                isButtonDown = false;
-            }
 
-            if(isMouseEnter && !isMouseInside)
+                if (!mouse.IsButtonDown(MouseButton.Left) && isButtonDown)
+                {
+                    MouseUp?.Invoke();
+                    isButtonDown = false;
+                }
+            }
+            else
             {
-                MouseLeave?.Invoke();
-                isMouseEnter = false;
+                if (isMouseEnter)
+                {
+                    MouseLeave?.Invoke();
+                    isMouseEnter = false;
+                }
             }
         }
 
