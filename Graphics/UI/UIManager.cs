@@ -11,7 +11,6 @@ namespace Teste1.Graphics.UI
 
         private readonly ShaderProgram shaderProgram;
         private readonly VAO vao;
-        private VBO? vbo;
         private IBO? ibo;
 
         public UIManager(Window window) 
@@ -69,11 +68,10 @@ namespace Teste1.Graphics.UI
 
         private void GenVBO()
         {
-            vbo?.Dispose();
-
             interfaces.ForEach(ui => ui.RenderOnce());
 
             List<Vector2> allVertices = new();
+            List<Vector4> allColors = new();
             List<int> allIndices = new();
 
             int indexCount = 0;
@@ -82,14 +80,20 @@ namespace Teste1.Graphics.UI
             {
                 allVertices.AddRange(ui.vertices);
 
+                allColors.AddRange(ui.BackgroundColors);
+
                 ui.indices.ForEach(i => allIndices.Add(i + indexCount));
 
                 indexCount += ui.vertices.Count;
             });
 
-            vbo = new(allVertices);
-            vbo.Bind();
-            vao.Link(0, 2, vbo);
+            VBO verticesVBO = new(allVertices);
+            verticesVBO.Bind();
+            vao.Link(0, 2, verticesVBO);
+
+            VBO colorsVBO = new(allColors);
+            colorsVBO.Bind();
+            vao.Link(1, 4, colorsVBO);
 
             ibo = new(allIndices);
         }
@@ -97,7 +101,6 @@ namespace Teste1.Graphics.UI
         public void Dispose()
         {
             vao.Dispose();
-            vbo?.Dispose();
             ibo?.Dispose();
 
             interfaces.ForEach(ui => ui.Dispose());

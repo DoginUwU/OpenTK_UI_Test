@@ -5,6 +5,8 @@ namespace Teste1.Graphics
     internal class VAO
     {
         public int ID;
+        
+        private readonly List<VBO> vBOs = new();
 
         public VAO()
         {
@@ -13,6 +15,8 @@ namespace Teste1.Graphics
 
         public void Link(int location, int size, VBO vbo)
         {
+            vBOs.Add(vbo);
+
             Bind();
             vbo.Bind();
 
@@ -34,6 +38,9 @@ namespace Teste1.Graphics
 
         public void Dispose()
         {
+            vBOs.ForEach(vbo => vbo.Dispose());
+            vBOs.Clear();
+
             GL.DeleteVertexArray(ID);
         }
     }

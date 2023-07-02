@@ -1,6 +1,7 @@
 ﻿
 
 using OpenTK.Mathematics;
+using System.Drawing;
 
 namespace Teste1.Graphics.UI
 {
@@ -18,40 +19,47 @@ namespace Teste1.Graphics.UI
         public override void RenderOnce()
         {
             base.RenderOnce();
-
-            indices = new()
-            {
-                0, 1, 2,
-                2, 3, 0,
-            };
-
-            float left = -manager.window.width / 2f;
-            float right = manager.window.width / 2f;
-            float top = manager.window.height / 2f;
-            float bottom = -manager.window.height / 2f;
-
-            float xPos = left + bounds.X / 100f * (right - left);
-            float yPos = top - bounds.Y / 100f * (top - bottom) - bounds.Height / 100f * (top - bottom);
-            float width = bounds.Width / 100f * (right - left);
-            float height = bounds.Height / 100f * (top - bottom);
-
-            xPos += padding.X;
-            yPos += padding.Y;
-            width -= padding.X * 2;
-            height -= padding.Y * 2;
-
-            vertices = new()
-            {
-                new Vector2(xPos, yPos),
-                new Vector2(xPos, yPos + height),
-                new Vector2(xPos + width, yPos + height),
-                new Vector2(xPos + width, yPos)
-            };
         }
 
         public override void Update()
         {
-            
+            base.Update();
+        }
+
+        protected override List<Vector2> CreateVertices()
+        {
+            RectangleF formatedBounds = GetBoundsSizeByPixel();
+
+            return new()
+            {
+                new Vector2(formatedBounds.X, formatedBounds.Y),
+                new Vector2(formatedBounds.X, formatedBounds.Y + formatedBounds.Height),
+                new Vector2(formatedBounds.X + formatedBounds.Width, formatedBounds.Y + formatedBounds.Height),
+                new Vector2(formatedBounds.X + formatedBounds.Width, formatedBounds.Y)
+            };
+        }
+
+        protected override List<int> CreateIndices()
+        {
+            return new()
+            {
+                0, 1, 2,
+                2, 3, 0,
+            };
+        }
+
+        protected override RectangleF CreatePositionByScreenPixels()
+        {
+            if(manager == null) return new();
+
+            RectangleF formatedBounds = GetBoundsSizeByPixel();
+
+            float posX = formatedBounds.X + manager.window.width / 2f;
+            float posY = formatedBounds.Y + manager.window.height / 2f;
+            float width = (float)formatedBounds.Width - posX;
+            float height = (float)formatedBounds.Height - posY;
+
+            return new(posX, posY, width, height);
         }
     }
 }

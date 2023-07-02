@@ -1,4 +1,7 @@
-﻿namespace Teste1.Graphics.UI
+﻿using OpenTK.Mathematics;
+using System.Drawing;
+
+namespace Teste1.Graphics.UI
 {
     internal class UIColumn : BaseUI
     {
@@ -18,7 +21,7 @@
 
         public override void Update()
         {
-            
+            base.Update();
         }
 
         private void FixPositions()
@@ -60,7 +63,7 @@
         public void AddChildren(BaseUI child)
         {
             childrens.Add(child);
-            manager.Add(child);
+            manager?.Add(child);
 
             FixPositions();
         }
@@ -68,6 +71,21 @@
         public void SetGap(float gap)
         {
             this.gap = gap;
+        }
+
+        protected override List<Vector2> CreateVertices()
+        {
+            return new();
+        }
+
+        protected override List<int> CreateIndices()
+        {
+            return new();
+        }
+
+        protected override RectangleF CreatePositionByScreenPixels()
+        {
+            return new();
         }
     }
 }

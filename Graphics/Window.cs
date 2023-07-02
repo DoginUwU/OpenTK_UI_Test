@@ -2,6 +2,7 @@
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Drawing;
 using Teste1.Graphics.UI;
 
 namespace Teste1.Graphics
@@ -32,12 +33,15 @@ namespace Teste1.Graphics
             camera = new(this);
 
             // Temp
-
-            UIColumn column = (UIColumn)uiManager.Add(new UIColumn());
+            UIColumn? column = (UIColumn)uiManager.Add(new UIColumn());
             column.SetPosition(new(10, 10));
             column.SetScale(new(80, 80));
-            column.SetGap(1);
-            column.AddChildren(new UIPanel());
+            column.SetGap(2);
+
+            UIPanel firstPanel = new();
+            firstPanel.SetBackgroundColor(Color.Blue);
+
+            column.AddChildren(firstPanel);
             column.AddChildren(new UIPanel());
             column.AddChildren(new UIPanel());
             column.AddChildren(new UIPanel());

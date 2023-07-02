@@ -7,6 +7,14 @@ namespace Teste1.Graphics
     {
         public int ID;
 
+        public VBO(List<Vector4> data)
+        {
+            ID = GL.GenBuffer();
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, ID);
+            GL.BufferData(BufferTarget.ArrayBuffer, data.Count * Vector4.SizeInBytes, data.ToArray(), BufferUsageHint.StaticDraw);
+        }
+
         public VBO(List<Vector3> data)
         {
             ID = GL.GenBuffer();
