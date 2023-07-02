@@ -13,7 +13,8 @@ namespace Teste1.Graphics.UI
         public List<int> indices = default!;
 
         public event Action? Clicked;
-        public event Action? Hovered;
+        public event Action? MouseEnter;
+        public event Action? MouseLeave;
         
         public List<Vector4> BackgroundColors
         {
@@ -29,6 +30,7 @@ namespace Teste1.Graphics.UI
 
         private Color backgroundColor = Color.Black;
         private bool isButtonDown = false;
+        private bool isMouseEnter = false;
 
         protected BaseUI() 
         {
@@ -86,10 +88,15 @@ namespace Teste1.Graphics.UI
             if (manager == null) return;
 
             MouseState mouse = manager.window.OpenGLWindow().MouseState;
+            bool isMouseInside = boundsByScreen.Contains((int)mouse.Position.X, (int)mouse.Position.Y);
 
-            if (boundsByScreen.Contains((int)mouse.Position.X, (int)mouse.Position.Y))
+            if (isMouseInside)
             {
-                Hovered?.Invoke();
+                if (!isMouseEnter)
+                {
+                    MouseEnter?.Invoke();
+                    isMouseEnter = true;
+                }
 
                 if (mouse.IsButtonDown(MouseButton.Left))
                 {
@@ -102,6 +109,12 @@ namespace Teste1.Graphics.UI
             } else if(isButtonDown)
             {
                 isButtonDown = false;
+            }
+
+            if(isMouseEnter && !isMouseInside)
+            {
+                MouseLeave?.Invoke();
+                isMouseEnter = false;
             }
         }
 
@@ -139,10 +152,10 @@ namespace Teste1.Graphics.UI
         {
             if (manager == null) return new();
 
-            float left = -manager.window.width / 2f;
-            float right = manager.window.width / 2f;
-            float top = manager.window.height / 2f;
-            float bottom = -manager.window.height / 2f;
+            float left = -manager.window.Width / 2f;
+            float right = manager.window.Width / 2f;
+            float top = manager.window.Height / 2f;
+            float bottom = -manager.window.Height / 2f;
 
             float xPos = left + bounds.X / 100f * (right - left);
             float yPos = top - bounds.Y / 100f * (top - bottom) - bounds.Height / 100f * (top - bottom);

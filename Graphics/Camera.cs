@@ -20,7 +20,7 @@ namespace Teste1.Graphics
         public void Setup()
         {
             view = Matrix4.Identity;
-            projection = Matrix4.CreateOrthographicOffCenter(-window.width / 2f, window.width / 2f, -window.height / 2f, window.height / 2f, 0f, 1f);
+            projection = Matrix4.CreateOrthographicOffCenter(-window.Width / 2f, window.Width / 2f, -window.Height / 2f, window.Height / 2f, 0f, 1f);
         }
 
         public Matrix4 GetViewMatrix()

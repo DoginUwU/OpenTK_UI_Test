@@ -16,8 +16,26 @@ namespace Teste1.Graphics
 
         public readonly Camera camera;
 
-        public int width = 800;
-        public int height = 600;
+        private int posX = 100;
+        private int posY = 100;
+        private int width = 800;
+        private int height = 600;
+
+        public int Width
+        {
+            get
+            {
+                return width;
+            }
+        }
+
+        public int Height
+        {
+            get 
+            { 
+                return height; 
+            }
+        }
 
         public Window()
         {
@@ -27,7 +45,7 @@ namespace Teste1.Graphics
 
             window.Resize += OnResize;
 
-            window.ClientRectangle = new(100, 100, width, height);
+            window.ClientRectangle = new(posX, posY, width, height);
 
             uiManager = new(this);
             camera = new(this);
@@ -38,10 +56,7 @@ namespace Teste1.Graphics
             column.SetScale(new(80, 80));
             column.SetGap(2);
 
-            UIPanel firstPanel = new();
-            firstPanel.SetBackgroundColor(Color.Blue);
-
-            column.AddChildren(firstPanel);
+            column.AddChildren(new UIPanel());
             column.AddChildren(new UIPanel());
             column.AddChildren(new UIPanel());
             column.AddChildren(new UIPanel());
@@ -75,6 +90,9 @@ namespace Teste1.Graphics
         private void OnResize(ResizeEventArgs e)
         {
             GL.Viewport(0, 0, e.Width, e.Height);
+
+            width = e.Width;
+            height = e.Height;
 
             camera?.Setup();
             uiManager?.ReloadAll();

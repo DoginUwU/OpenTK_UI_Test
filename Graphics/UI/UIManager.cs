@@ -1,5 +1,6 @@
 ﻿using OpenTK.Mathematics;
 using OpenTK.Graphics.OpenGL4;
+using System.Drawing;
 
 namespace Teste1.Graphics.UI
 {
@@ -31,6 +32,16 @@ namespace Teste1.Graphics.UI
             interfaces.Add(ui);
 
             GenVBO();
+
+            // TODO: Remove this
+            ui.MouseEnter += () =>
+            {
+                ui.SetBackgroundColor(Color.White);
+            };
+            ui.MouseLeave += () =>
+            {
+                ui.SetBackgroundColor(Color.Black);
+            };
 
             return ui;
         }

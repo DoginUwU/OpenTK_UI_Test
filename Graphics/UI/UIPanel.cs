@@ -54,12 +54,10 @@ namespace Teste1.Graphics.UI
 
             RectangleF formatedBounds = GetBoundsSizeByPixel();
 
-            float posX = formatedBounds.X + manager.window.width / 2f;
-            float posY = formatedBounds.Y + manager.window.height / 2f;
-            float width = (float)formatedBounds.Width - posX;
-            float height = (float)formatedBounds.Height - posY;
+            float posX = formatedBounds.X + manager!.window.Width / 2f;
+            float posY = manager!.window.Height / 2f - formatedBounds.Y - formatedBounds.Height;
 
-            return new(posX, posY, width, height);
+            return new(posX, posY, formatedBounds.Width, formatedBounds.Height);
         }
     }
 }
