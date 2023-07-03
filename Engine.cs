@@ -1,30 +1,21 @@
-﻿using OpenTK.Graphics.OpenGL4;
-using Teste1.Graphics;
+﻿using Teste1.Graphics;
 
 namespace Teste1
 {
-    internal class Game
+    internal class Engine
     {
-        private static Game instance = default!;
+        private static Engine instance = default!;
 
         private readonly List<Window> windows = new();
 
         private bool isRunning = false;
 
-        public Game() 
+        public Engine() 
         {
-            Game.instance = this;
-
-            Window? mainWindow = new();
-
-            // mainWindow.OpenGLWindow().WindowBorder = WindowBorder.Hidden;
-
-            AddWindow(mainWindow);
-
-            Init();
+            instance = this;
         }
 
-        public static Game Instance()
+        public static Engine Instance()
         {
             return instance;
         }
@@ -43,12 +34,9 @@ namespace Teste1
             instance.windows.Remove(window);
         }
 
-        private static void Init()
+        public static void Init()
         {
             instance.isRunning = true;
-
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             GameLoop();
         }

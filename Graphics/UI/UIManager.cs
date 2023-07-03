@@ -14,7 +14,7 @@ namespace Teste1.Graphics.UI
         private readonly VAO vao;
         private IBO? ibo;
 
-        public UIManager(Window window) 
+        public UIManager(Window window)
         {
             this.window = window;
 

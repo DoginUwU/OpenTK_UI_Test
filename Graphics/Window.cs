@@ -1,25 +1,24 @@
 ﻿using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Drawing;
-using Teste1.Graphics.UI;
+using Teste1.Graphics.Scene;
 
 namespace Teste1.Graphics
 {
-    internal class Window
+    internal abstract class Window
     {
+        public readonly Camera camera;
         public bool isRunning = false;
 
-        private readonly GameWindow window;
-        private readonly UIManager uiManager;
+        protected readonly GameWindow window;
+        protected readonly SceneManager sceneManager;
 
-        public readonly Camera camera;
-
-        private int posX = 100;
-        private int posY = 100;
-        private int width = 800;
-        private int height = 600;
+        protected int posX = 0;
+        protected int posY = 0;
+        protected int width = 0;
+        protected int height = 0;
 
         public int Width
         {
@@ -43,23 +42,13 @@ namespace Teste1.Graphics
 
             window.MakeCurrent();
 
-            window.Resize += OnResize;
-
-            window.ClientRectangle = new(posX, posY, width, height);
-
-            uiManager = new(this);
+            sceneManager = new(this);
             camera = new(this);
 
-            // Temp
-            UIColumn? column = (UIColumn)uiManager.Add(new UIColumn());
-            column.SetPosition(new(10, 50));
-            column.SetScale(new(30, 40));
-            column.SetGap(2);
+            window.Resize += OnResize;
 
-            column.AddChildren(new UIPanel());
-            column.AddChildren(new UIPanel());
-            column.AddChildren(new UIPanel());
-            column.AddChildren(new UIPanel());
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         }
 
         ~Window()
@@ -74,7 +63,7 @@ namespace Teste1.Graphics
             isRunning = true;
         }
 
-        public void Update(float deltaTime)
+        public virtual void Update(float deltaTime)
         {
             window.MakeCurrent();
 
@@ -95,7 +84,7 @@ namespace Teste1.Graphics
             height = e.Height;
 
             camera?.Setup();
-            uiManager?.ReloadAll();
+            sceneManager.Refresh();
         }
 
         private void UpdateRenderFrame()
@@ -103,7 +92,7 @@ namespace Teste1.Graphics
             GL.ClearColor(0.52f, 0.89f, 1f, 1f);
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            uiManager.Render();
+            sceneManager.UpdateRenderFrame();
 
             window.Context.SwapBuffers();
         }
@@ -113,7 +102,7 @@ namespace Teste1.Graphics
             NativeWindow.ProcessWindowEvents(false);
             window.ProcessInputEvents();
 
-            uiManager.Update();
+            sceneManager.UpdateFrame();
 
             if (!window.IsFocused)
             {
@@ -134,6 +123,19 @@ namespace Teste1.Graphics
 
             window.Close();
             window.Dispose();
+        }
+
+        protected void Resize(Vector2i size)
+        {
+            width = size.X;
+            height = size.Y;
+
+            window.Bounds = new(0, 0, width, height);
+        }
+
+        protected void Position(Vector2i pos)
+        {
+            window.Location = pos;
         }
     }
 }
