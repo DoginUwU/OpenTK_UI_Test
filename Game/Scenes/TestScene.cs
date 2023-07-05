@@ -11,6 +11,7 @@ namespace Teste1.Game.Scenes
             UIPanel? panel = (UIPanel)uiManager.Add(new UIPanel());
             panel.SetPosition(new(10, 10));
             panel.SetScale(new(80, 80));
+            panel.SetBackgroundImage(new Texture("teste.jpg"));
         }
     }
 }

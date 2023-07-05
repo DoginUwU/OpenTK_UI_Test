@@ -64,7 +64,7 @@ namespace Teste1.Game.Windows
                 flip2 = false;
             }
 
-            Position(new((int)test, (int)test2));
+            // Position(new((int)test, (int)test2));
         }
     }
 }

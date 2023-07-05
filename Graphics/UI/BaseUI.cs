@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Drawing;
 using Teste1.Graphics.Utils;
@@ -9,6 +10,7 @@ namespace Teste1.Graphics.UI
     {
         public RectangleF bounds;
 
+        public List<Vector2> uvs = default!;
         public List<Vector2> vertices = default!;
         public List<int> indices = default!;
 
@@ -17,25 +19,22 @@ namespace Teste1.Graphics.UI
         public event Action? MouseEnter;
         public event Action? MouseLeave;
         
-        public List<Vector4> BackgroundColors
-        {
-            get
-            {
-                return this.CreateColors();
-            }
-        }
-
         protected UIManager? manager;
         protected Vector4 padding = default!;
         protected RectangleF boundsByScreen;
 
         private Color backgroundColor = Color.Black;
+        private Texture? backgroundImage;
+
         private bool isButtonDown = false;
         private bool isMouseEnter = false;
+        private readonly VAO vao;
+        private IBO? ibo;
 
         protected BaseUI() 
         {
             bounds = new(0, 0, 0, 0);
+            vao = new();
         }
 
         public void InitUI(UIManager manager)
@@ -80,6 +79,11 @@ namespace Teste1.Graphics.UI
             backgroundColor = color;
 
             manager?.ReloadAll();
+        }
+
+        public void SetBackgroundImage(Texture image)
+        {
+            backgroundImage = image;
         }
 
         public abstract void Start();
@@ -136,13 +140,29 @@ namespace Teste1.Graphics.UI
             vertices = CreateVertices();
             indices = CreateIndices();
             boundsByScreen = CreatePositionByScreenPixels();
+            uvs = CreateTextureCoordinates();
+
+            VBO verticesVBO = new(vertices);
+            vao.Link(0, 2, verticesVBO);
+
+            VBO colorsVBO = new(CreateColors());
+            vao.Link(1, 4, colorsVBO);
+
+            VBO uvsVBO = new(uvs);
+            vao.Link(2, 2, uvsVBO);
+
+            ibo = new(indices);
         }
 
-        public virtual void Dispose() { }
+        public virtual void Dispose()
+        {
+            backgroundImage?.Dispose();
+        }
 
         protected abstract List<Vector2> CreateVertices();
         protected abstract List<int> CreateIndices();
         protected abstract RectangleF CreatePositionByScreenPixels();
+        protected abstract List<Vector2> CreateTextureCoordinates();
 
         protected List<Vector4> CreateColors()
         {
@@ -176,6 +196,27 @@ namespace Teste1.Graphics.UI
             height -= padding.Y * 2;
 
             return new(xPos, yPos, width, height);
+        }
+
+        public void Render()
+        {
+            if (ibo  == null || manager == null) return;
+
+            backgroundImage?.Bind();
+
+            vao.Bind();
+            ibo.Bind();
+
+            int hasTextureLocation = GL.GetUniformLocation(manager.shaderProgram.ID, "hasTexture");
+
+            GL.Uniform1(hasTextureLocation, backgroundImage != null ? 1 : 0);
+
+            GL.DrawElements(PrimitiveType.Triangles, ibo.data.Count, DrawElementsType.UnsignedInt, 0);
+
+            backgroundImage?.Unbind();
+
+            vao.Unbind();
+            ibo.Unbind();
         }
     }
 }

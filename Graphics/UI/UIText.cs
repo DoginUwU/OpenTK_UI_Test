@@ -38,5 +38,10 @@ namespace Teste1.Graphics.UI
         {
             throw new NotImplementedException();
         }
+
+        protected override List<Vector2> CreateTextureCoordinates()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -33,6 +33,7 @@ namespace Teste1.Graphics
 
         public void Unbind()
         {
+            vBOs.ForEach(vbo => vbo.Unbind());
             GL.BindVertexArray(0);
         }
 

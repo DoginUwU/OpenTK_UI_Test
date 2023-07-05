@@ -48,6 +48,17 @@ namespace Teste1.Graphics.UI
             };
         }
 
+        protected override List<Vector2> CreateTextureCoordinates()
+        {
+            return new()
+            {
+                new Vector2(0, 1), // canto superior esquerdo
+                new Vector2(0, 0), // canto inferior esquerdo
+                new Vector2(1, 0), // canto inferior direito
+                new Vector2(1, 1)  // canto superior direito
+            };
+        }
+
         protected override RectangleF CreatePositionByScreenPixels()
         {
             if(manager == null) return new();

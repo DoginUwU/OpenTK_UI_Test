@@ -84,5 +84,10 @@ namespace Teste1.Graphics.UI
         {
             return new();
         }
+
+        protected override List<Vector2> CreateTextureCoordinates()
+        {
+            return new();
+        }
     }
 }

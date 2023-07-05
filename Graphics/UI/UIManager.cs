@@ -7,12 +7,12 @@ namespace Teste1.Graphics.UI
     internal class UIManager
     {
         public Window window;
+        public readonly ShaderProgram shaderProgram;
 
         private readonly List<BaseUI> interfaces = new();
 
-        private readonly ShaderProgram shaderProgram;
         private readonly VAO vao;
-        private IBO? ibo;
+        private readonly IBO? ibo = default!;
 
         public UIManager(Window window)
         {
@@ -33,29 +33,12 @@ namespace Teste1.Graphics.UI
 
             GenVBO();
 
-            // TODO: Remove this
-            ui.MouseEnter += () =>
-            {
-                ui.SetBackgroundColor(Color.White);
-            };
-            ui.MouseLeave += () =>
-            {
-                ui.SetBackgroundColor(Color.Black);
-            };
-            ui.MouseDown += () =>
-            {
-                ui.SetBackgroundColor(Color.BlueViolet);
-            };
-            ui.MouseUp += () =>
-            {
-                ui.SetBackgroundColor(Color.White);
-            };
-
             return ui;
         }
 
         public void Render()
         {
+
             shaderProgram.Bind();
 
             Matrix4 view = window.camera.GetViewMatrix();
@@ -67,12 +50,7 @@ namespace Teste1.Graphics.UI
             GL.UniformMatrix4(projectionLocation, false, ref projection);
             GL.UniformMatrix4(viewLocation, false, ref view);
 
-            if (ibo == null) return;
-
-            vao.Bind();
-            ibo.Bind();
-
-            GL.DrawElements(PrimitiveType.Triangles, ibo.data.Count, DrawElementsType.UnsignedInt, 0);
+            interfaces.ForEach(ui => ui.Render());
         }
 
         public void Update()
@@ -88,33 +66,6 @@ namespace Teste1.Graphics.UI
         private void GenVBO()
         {
             interfaces.ForEach(ui => ui.RenderOnce());
-
-            List<Vector2> allVertices = new();
-            List<Vector4> allColors = new();
-            List<int> allIndices = new();
-
-            int indexCount = 0;
-
-            interfaces.ForEach(ui =>
-            {
-                allVertices.AddRange(ui.vertices);
-
-                allColors.AddRange(ui.BackgroundColors);
-
-                ui.indices.ForEach(i => allIndices.Add(i + indexCount));
-
-                indexCount += ui.vertices.Count;
-            });
-
-            VBO verticesVBO = new(allVertices);
-            verticesVBO.Bind();
-            vao.Link(0, 2, verticesVBO);
-
-            VBO colorsVBO = new(allColors);
-            colorsVBO.Bind();
-            vao.Link(1, 4, colorsVBO);
-
-            ibo = new(allIndices);
         }
 
         public void Dispose()
