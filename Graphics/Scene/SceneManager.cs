@@ -36,19 +36,16 @@
 
         public void UpdateRenderFrame()
         {
-            // sceneList.ForEach(scene => scene.UpdateRenderFrame());
             activeScene?.UpdateRenderFrame();
         }
 
         public void UpdateFrame()
         {
-            // sceneList.ForEach(scene => scene.UpdateFrame());
             activeScene?.UpdateFrame();
         }
 
         public void Refresh()
         {
-            // sceneList.ForEach(scene => scene.Refresh());
             activeScene?.Refresh();
         }
     }

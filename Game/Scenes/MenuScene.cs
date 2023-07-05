@@ -20,11 +20,14 @@ namespace Teste1.Game.Scenes
             panel2.SetBackgroundImage(new Texture("teste2.jpg"));
             UIPanel panel3 = new();
             panel3.SetBackgroundImage(new Texture("teste3.jpg"));
+            UIPanel panel4 = new();
+            panel4.SetBackgroundImage(new Texture("Windows_Button.png"));
+            panel4.texturePositionMode = TexturePositionMode.SCALE_BY_RATIO;
 
             column.AddChildren(panel1);
             column.AddChildren(panel2);
             column.AddChildren(panel3);
-            column.AddChildren(new UIPanel());
+            column.AddChildren(panel4);
         }
     }
 }

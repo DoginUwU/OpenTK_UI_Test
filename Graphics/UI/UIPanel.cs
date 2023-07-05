@@ -1,6 +1,7 @@
 ﻿
 
 using OpenTK.Mathematics;
+using System.ComponentModel;
 using System.Drawing;
 
 namespace Teste1.Graphics.UI
@@ -50,13 +51,44 @@ namespace Teste1.Graphics.UI
 
         protected override List<Vector2> CreateTextureCoordinates()
         {
-            return new()
+            if (backgroundImage == null) return new();
+
+            switch (texturePositionMode)
             {
-                new Vector2(0, 1), // canto superior esquerdo
-                new Vector2(0, 0), // canto inferior esquerdo
-                new Vector2(1, 0), // canto inferior direito
-                new Vector2(1, 1)  // canto superior direito
-            };
+                case TexturePositionMode.SCALE_BY_RATIO:
+                    float panelWidth = bounds.Width;
+                    float panelHeight = bounds.Height;
+
+                    float imageWidth = backgroundImage.Width;
+                    float imageHeight = backgroundImage.Height;
+
+                    float ratioX = panelWidth / imageWidth;
+                    float ratioY = panelHeight / imageHeight;
+
+                    float scale = Math.Min(ratioX, ratioY);
+                    float scaledWidth = imageWidth * scale;
+                    float scaledHeight = imageHeight * scale;
+
+                    float offsetX = (panelWidth - scaledWidth) / 2f;
+                    float offsetY = (panelHeight - scaledHeight) / 2f;
+
+                    return new List<Vector2>
+                    {
+                        new Vector2(offsetX / panelWidth, 1 - offsetY / panelHeight),
+                        new Vector2(offsetX / panelWidth, 1 - (offsetY + scaledHeight) / panelHeight),
+                        new Vector2((offsetX + scaledWidth) / panelWidth, 1 - (offsetY + scaledHeight) / panelHeight),
+                        new Vector2((offsetX + scaledWidth) / panelWidth, 1 - offsetY / panelHeight)
+                    };
+
+                default:
+                    return new()
+                    {
+                        new Vector2(0, 1), // canto superior esquerdo
+                        new Vector2(0, 0), // canto inferior esquerdo
+                        new Vector2(1, 0), // canto inferior direito
+                        new Vector2(1, 1)  // canto superior direito
+                    };
+            }
         }
 
         protected override RectangleF CreatePositionByScreenPixels()

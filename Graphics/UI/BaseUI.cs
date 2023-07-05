@@ -6,9 +6,16 @@ using Teste1.Graphics.Utils;
 
 namespace Teste1.Graphics.UI
 {
+    enum TexturePositionMode
+    {
+        DEFAULT,
+        SCALE_BY_RATIO
+    };
+
     internal abstract class BaseUI
     {
         public RectangleF bounds;
+        public TexturePositionMode texturePositionMode = TexturePositionMode.DEFAULT;
 
         public List<Vector2> uvs = default!;
         public List<Vector2> vertices = default!;
@@ -24,7 +31,7 @@ namespace Teste1.Graphics.UI
         protected RectangleF boundsByScreen;
 
         private Color backgroundColor = Color.Black;
-        private Texture? backgroundImage;
+        protected Texture? backgroundImage;
 
         private bool isButtonDown = false;
         private bool isMouseEnter = false;
@@ -203,7 +210,6 @@ namespace Teste1.Graphics.UI
             if (ibo  == null || manager == null) return;
 
             backgroundImage?.Bind();
-
             vao.Bind();
             ibo.Bind();
 
@@ -214,7 +220,6 @@ namespace Teste1.Graphics.UI
             GL.DrawElements(PrimitiveType.Triangles, ibo.data.Count, DrawElementsType.UnsignedInt, 0);
 
             backgroundImage?.Unbind();
-
             vao.Unbind();
             ibo.Unbind();
         }

@@ -6,6 +6,8 @@ namespace Teste1.Graphics
     internal class Texture
     {
         public int ID;
+        public int Width;
+        public int Height;
 
         public Texture(string file)
         {
@@ -27,6 +29,9 @@ namespace Teste1.Graphics
             ImageResult texture = ImageResult.FromStream(File.OpenRead(Path.Combine(texturesDirectory, file)), ColorComponents.RedGreenBlueAlpha);
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, texture.Width, texture.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, texture.Data);
+
+            Width = texture.Width;
+            Height = texture.Height;
 
             Unbind();
         }
