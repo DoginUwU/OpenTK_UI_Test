@@ -4,12 +4,14 @@ using Teste1.Graphics.Scene;
 
 namespace Teste1.Game.Windows
 {
-    internal class TestWindow: Window
+    internal class TestWindow : Window
     {
         public TestWindow() : base()
         {
-            Resize(new(400, 400));
-            Position(new(800, 40));
+            Resize(new(720, 720));
+            Position(new(20, 30));
+
+            window.WindowBorder = OpenTK.Windowing.Common.WindowBorder.Hidden;
 
             Scene testScene = new TestScene(this);
 

@@ -53,7 +53,7 @@ namespace Teste1.Graphics
 
         ~Window()
         {
-            window.Resize += OnResize;
+            window.Resize -= OnResize;
 
             Dispose();
         }

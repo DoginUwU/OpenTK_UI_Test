@@ -1,4 +1,5 @@
-﻿using Teste1.Graphics;
+﻿using System.Data.Common;
+using Teste1.Graphics;
 using Teste1.Graphics.Scene;
 using Teste1.Graphics.UI;
 
@@ -8,10 +9,12 @@ namespace Teste1.Game.Scenes
     {
         public TestScene(Window window) : base(window, "TestScene")
         {
-            UIPanel? panel = (UIPanel)uiManager.Add(new UIPanel());
-            panel.SetPosition(new(10, 10));
-            panel.SetScale(new(80, 80));
-            panel.SetBackgroundImage(new Texture("teste.jpg"));
+            UIPanel panel1 = new();
+            panel1.SetBackgroundImage(new Texture("teste.jpg"));
+            panel1.SetPosition(new(50 - (30 / 2), 80 - (30 / 2)));
+            panel1.SetScale(new(30, 30));
+
+            uiManager.Add(panel1);
         }
     }
 }

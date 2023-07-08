@@ -8,7 +8,7 @@ namespace Teste1.Game
         {
             _ = new Engine();
 
-            Engine.AddWindow(new GameWindow());
+            // Engine.AddWindow(new GameWindow());
             Engine.AddWindow(new TestWindow());
 
             Engine.Init();
